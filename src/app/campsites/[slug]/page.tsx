@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { campsites, getCampsiteBySlug } from "@/data";
 import { ACCESS_LABELS, CAPACITY_LABELS, MISSING, WATER_LABELS } from "@/lib/labels";
+import { googleMapsUrl, osmUrl } from "@/lib/maps";
 
 export function generateStaticParams() {
   return campsites.map((c) => ({ slug: c.slug }));
@@ -150,6 +151,28 @@ export default async function CampsitePage({ params }: PageProps<"/campsites/[sl
               座標：{c.lat.toFixed(5)}, {c.lng.toFixed(5)}
             </p>
             <ul className="mt-3 space-y-2 text-sm">
+              <li>
+                <a
+                  href={osmUrl(c.lat, c.lng)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-primary underline underline-offset-4"
+                >
+                  在 OpenStreetMap 查看位置
+                  <span className="sr-only">（於新分頁開啟）</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={googleMapsUrl(c.lat, c.lng)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline underline-offset-4"
+                >
+                  在 Google 地圖查看位置
+                  <span className="sr-only">（於新分頁開啟）</span>
+                </a>
+              </li>
               <li>
                 <a
                   href={c.afcdUrlZh}
