@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { MapPoint } from "./campsite-map";
+import type { MapPoint } from "./types";
 
 // Leaflet touches `window` on import, so the map only renders in the browser.
 const CampsiteMap = dynamic(() => import("./campsite-map"), {

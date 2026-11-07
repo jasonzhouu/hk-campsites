@@ -5,7 +5,7 @@ import { formatComposite } from "@/lib/ratings";
 import { googleMapsUrl, osmUrl } from "@/lib/maps";
 import { pageMetadata } from "@/lib/metadata";
 import { CampsiteMapLoader } from "@/components/map/campsite-map-loader";
-import type { MapPoint } from "@/components/map/campsite-map";
+import type { MapPoint } from "@/components/map/types";
 
 export const metadata: Metadata = pageMetadata({
   title: "地圖總覽",
