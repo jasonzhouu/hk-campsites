@@ -12,8 +12,7 @@ export default function HomePage() {
         </h1>
         <p className="leading-relaxed text-muted-foreground">
           整理漁農自然護理署在郊野公園及特別地區設立的 {campsites.length}{" "}
-          個指定營地。每個營地附水源、營位、交通指引及「編輯評分」，預設按綜合分排序。
-          評分屬本站編輯意見，並非用戶評價；
+          個指定營地。每個營地附水源、營位、交通指引及「編輯評分」，預設按綜合分排序。評分屬本站編輯意見，並非用戶評價；
           <Link href="/about#ratings" className="font-medium text-primary underline underline-offset-4">
             了解評分方法
           </Link>

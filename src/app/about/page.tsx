@@ -8,13 +8,15 @@ import {
   RATING_LABELS,
   RATING_WEIGHTS,
 } from "@/lib/ratings";
+import { pageMetadata } from "@/lib/metadata";
 import { site, sources } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "關於本站、資料來源及露營守則",
   description:
     "本站資料來源（漁護署、康文署、青年網站）、編輯評分方法、露營守則提示及免責聲明。本站並非政府官方網站。",
-};
+  path: "/about",
+});
 
 function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (

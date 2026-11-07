@@ -7,6 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { campsites, getCampsiteBySlug } from "@/data";
 import { ACCESS_LABELS, CAPACITY_LABELS, MISSING, WATER_LABELS } from "@/lib/labels";
 import { googleMapsUrl, osmUrl } from "@/lib/maps";
+import { pageMetadata } from "@/lib/metadata";
+import { formatComposite } from "@/lib/ratings";
 
 export function generateStaticParams() {
   return campsites.map((c) => ({ slug: c.slug }));
@@ -17,11 +19,12 @@ export async function generateMetadata({
 }: PageProps<"/campsites/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const c = getCampsiteBySlug(slug);
-  if (!c) return {};
-  return {
-    title: `${c.nameZh} ${c.nameEn}`,
-    description: c.introZh,
-  };
+  if (!c) return { title: "找不到營地" };
+  return pageMetadata({
+    title: `${c.nameZh}（${c.nameEn}）`,
+    description: `${c.introZh}編輯綜合分 ${formatComposite(c.composite)} / 5。`,
+    path: `/campsites/${c.slug}`,
+  });
 }
 
 function Section({

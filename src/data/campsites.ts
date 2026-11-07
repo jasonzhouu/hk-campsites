@@ -769,7 +769,7 @@ export const campsites: Campsite[] = [
     "afcdUrlZh": "https://www.afcd.gov.hk/tc_chi/country/cou_vis/cou_vis_cam/cou_vis_cam_cam/cou_vis_cam_24_Twisk.html",
     "afcdUrlEn": "https://www.afcd.gov.hk/english/country/cou_vis/cou_vis_cam/cou_vis_cam_cam/cou_vis_cam_24_Twisk.html",
     "bookingRequired": true,
-    "bookingNoteZh": "須預約使用。預約方法及開放安排以漁護署營地網頁最新公布為準。",
+    "bookingNoteZh": "預約方法及開放安排以漁護署營地網頁最新公布為準。",
     "introZh": "荃錦營地位於大欖郊野公園，是漁護署設立的指定露營地點之一。營地設水喉供水；營位約 20 至 50 個。",
     "transportZh": "鄰近荃錦公路荃錦坳，可乘來往荃灣及錦田的巴士（如 51 號）於荃錦坳下車，再步行前往。",
     "access": [

@@ -28,23 +28,23 @@ function TentMark() {
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6">
         <Link
           href="/"
           className="flex min-w-0 items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
           <TentMark />
-          <span className="truncate text-base font-semibold tracking-tight sm:text-lg">
+          <span className="truncate text-[15px] font-semibold tracking-tight sm:text-lg">
             {site.name}
           </span>
         </Link>
         <nav aria-label="主要導覽">
-          <ul className="flex items-center gap-1">
+          <ul className="flex shrink-0 items-center sm:gap-1">
             {nav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="inline-flex h-10 items-center rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+                  className="inline-flex h-10 items-center whitespace-nowrap rounded-md px-2.5 text-sm sm:px-3 font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
                 >
                   {item.label}
                 </Link>

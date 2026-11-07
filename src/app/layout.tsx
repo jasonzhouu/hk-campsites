@@ -4,12 +4,27 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { site } from "@/lib/site";
 import "./globals.css";
 
+const defaultTitle = `${site.name}｜漁護署 41 個指定露營地點`;
+
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
-    default: `${site.name}｜漁護署 41 個指定露營地點`,
+    default: defaultTitle,
     template: `%s｜${site.name}`,
   },
   description: site.description,
+  applicationName: site.name,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "zh_HK",
+    siteName: site.name,
+    title: defaultTitle,
+    description: site.description,
+    url: "/",
+  },
+  twitter: { card: "summary" },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
