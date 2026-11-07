@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { RatingPanel } from "@/components/ratings/rating-panel";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { campsites, getCampsiteBySlug } from "@/data";
 import { ACCESS_LABELS, CAPACITY_LABELS, MISSING, WATER_LABELS } from "@/lib/labels";
-import { formatComposite, RATING_DIMENSIONS, RATING_LABELS, RATING_MAX } from "@/lib/ratings";
 
 export function generateStaticParams() {
   return campsites.map((c) => ({ slug: c.slug }));
@@ -140,28 +140,7 @@ export default async function CampsitePage({ params }: PageProps<"/campsites/[sl
         </div>
 
         <aside className="min-w-0 space-y-6">
-          <section aria-labelledby="scores" className="rounded-lg border border-border bg-card p-5">
-            <h2 id="scores" className="text-lg font-semibold">
-              編輯評分
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">本站編輯主觀評估，非用戶評價。</p>
-            <p className="mt-4 text-3xl font-semibold tabular-nums">
-              {formatComposite(c.composite)}
-              <span className="ml-1 text-base font-normal text-muted-foreground">
-                / {RATING_MAX} 綜合分
-              </span>
-            </p>
-            <dl className="mt-4 space-y-2">
-              {RATING_DIMENSIONS.map((d) => (
-                <div key={d} className="flex justify-between gap-4">
-                  <dt>{RATING_LABELS[d].zh}</dt>
-                  <dd className="tabular-nums">
-                    {c.ratings[d]} / {RATING_MAX}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </section>
+          <RatingPanel ratings={c.ratings} composite={c.composite} />
 
           <section aria-labelledby="official" className="rounded-lg border border-border bg-card p-5">
             <h2 id="official" className="text-lg font-semibold">

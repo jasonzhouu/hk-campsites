@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import type { CampsiteWithComposite } from "@/data";
 import { ACCESS_LABELS, CAPACITY_LABELS, WATER_LABELS } from "@/lib/labels";
-import { formatComposite } from "@/lib/ratings";
+import { CompositeScore } from "@/components/ratings/composite-score";
+import { RatingSummary } from "@/components/ratings/rating-panel";
 
 export function CampsiteCard({ campsite: c }: { campsite: CampsiteWithComposite }) {
   return (
@@ -24,10 +25,10 @@ export function CampsiteCard({ campsite: c }: { campsite: CampsiteWithComposite 
             {c.nameEn}
           </p>
         </div>
-        <div className="shrink-0 text-right">
-          <p className="text-2xl font-semibold tabular-nums leading-none">{formatComposite(c.composite)}</p>
-          <p className="mt-1 text-xs text-muted-foreground">編輯綜合分</p>
-        </div>
+        <CompositeScore value={c.composite} className="shrink-0 text-right" />
+      </div>
+      <div className="mt-4">
+        <RatingSummary ratings={c.ratings} />
       </div>
       <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="營地特點">
         {c.bookingRequired && (

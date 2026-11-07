@@ -15,16 +15,34 @@ export const RATING_DIMENSIONS: RatingDimension[] = [
   "transport",
 ];
 
-export const RATING_LABELS: Record<RatingDimension, { zh: string; en: string; hintZh: string }> = {
-  facilities: { zh: "營地設施", en: "Facilities", hintZh: "水源、洗手間及營位數目" },
-  scenery: { zh: "景色", en: "Scenery", hintZh: "海景、山景及地質景觀" },
+export const RATING_LABELS: Record<
+  RatingDimension,
+  { zh: string; shortZh: string; en: string; hintZh: string }
+> = {
+  facilities: { zh: "營地設施", shortZh: "設施", en: "Facilities", hintZh: "水源、洗手間及營位數目" },
+  scenery: { zh: "景色", shortZh: "景色", en: "Scenery", hintZh: "海景、山景及地質景觀" },
   quietness: {
     zh: "清靜度",
+    shortZh: "清靜度",
     en: "Quietness",
     hintZh: "越高越清靜、越少人（由擁擠程度反轉計算）",
   },
-  transport: { zh: "交通便利度", en: "Transport", hintZh: "車路可達程度、步程及是否需乘船" },
+  transport: {
+    zh: "交通便利度",
+    shortZh: "交通",
+    en: "Transport",
+    hintZh: "車路可達程度、步程及是否需乘船",
+  },
 };
+
+/** 清靜度慣例說明（詳情頁、關於頁及 README 共用同一說法） */
+export const QUIETNESS_NOTE_ZH =
+  "「清靜度」由擁擠程度反轉而成（清靜度 = 6 − 擁擠程度）：5 分代表最清靜、人最少，1 分代表最擁擠。因此所有維度都是分數越高越好。";
+
+/** 綜合分公式文字，由權重生成，避免與 computeComposite() 不一致 */
+export const COMPOSITE_FORMULA_ZH = `綜合分 = ${RATING_DIMENSIONS.map(
+  (d) => `${RATING_LABELS[d].shortZh}×${RATING_WEIGHTS[d].toFixed(2)}`,
+).join(" + ")}（四捨五入至小數後兩位）`;
 
 export const RATING_MAX = 5;
 
