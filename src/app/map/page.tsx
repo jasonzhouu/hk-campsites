@@ -4,37 +4,23 @@ import { campsites, parks } from "@/data";
 import { formatComposite } from "@/lib/ratings";
 import { googleMapsUrl, osmUrl } from "@/lib/maps";
 import { pageMetadata } from "@/lib/metadata";
+import { CampsiteMapLoader } from "@/components/map/campsite-map-loader";
+import type { MapPoint } from "@/components/map/campsite-map";
 
 export const metadata: Metadata = pageMetadata({
   title: "地圖總覽",
-  description: `${campsites.length} 個漁護署指定營地的位置總覽，按郊野公園分組，附 OpenStreetMap 及 Google 地圖連結。`,
+  description: `${campsites.length} 個漁護署指定營地的 OpenStreetMap 互動地圖，可縮放查看各營地位置及綜合分，並按郊野公園分組，附 OpenStreetMap 及 Google 地圖連結。`,
   path: "/map",
 });
 
-// Simple equirectangular projection of the catalog's bounding box onto an SVG viewBox.
-const W = 1000;
-const H = 620;
-const PAD = 40;
-const lats = campsites.map((c) => c.lat);
-const lngs = campsites.map((c) => c.lng);
-const minLat = Math.min(...lats);
-const maxLat = Math.max(...lats);
-const minLng = Math.min(...lngs);
-const maxLng = Math.max(...lngs);
-// Correct longitude scale for latitude (~22.4°N) so distances look right.
-const lngScale = Math.cos((((minLat + maxLat) / 2) * Math.PI) / 180);
-const spanX = (maxLng - minLng) * lngScale;
-const spanY = maxLat - minLat;
-const scale = Math.min((W - PAD * 2) / spanX, (H - PAD * 2) / spanY);
-const offsetX = (W - spanX * scale) / 2;
-const offsetY = (H - spanY * scale) / 2;
-
-function project(lat: number, lng: number) {
-  return {
-    x: offsetX + (lng - minLng) * lngScale * scale,
-    y: offsetY + (maxLat - lat) * scale,
-  };
-}
+const mapPoints: MapPoint[] = campsites.map((c) => ({
+  id: c.id,
+  slug: c.slug,
+  nameZh: c.nameZh,
+  lat: c.lat,
+  lng: c.lng,
+  score: formatComposite(c.composite),
+}));
 
 const external = "font-medium text-primary underline underline-offset-4";
 
@@ -46,59 +32,20 @@ export default function MapPage() {
           地圖總覽
         </h1>
         <p className="leading-relaxed text-muted-foreground">
-          以下示意圖按座標標出全部 {campsites.length}{" "}
-          個營地的相對位置（不含海岸線及地形，只供參考）。點選編號可跳至該營地；每個營地均附
+          以下 OpenStreetMap 互動地圖標出全部 {campsites.length}{" "}
+          個營地的位置，可拖曳及縮放；點選標記可查看綜合分並前往營地詳情。地圖下方按郊野公園列出各營地，並附
           OpenStreetMap 及 Google 地圖連結，方便規劃路線。
         </p>
       </header>
 
       <figure className="mt-8 overflow-hidden rounded-lg border border-border bg-card">
-        {/* On phones the overview scrolls sideways inside its frame so markers stay tappable. */}
-        <div className="overflow-x-auto">
-          <svg
-            viewBox={`0 0 ${W} ${H}`}
-            role="img"
-            aria-labelledby="map-title"
-            className="h-auto w-full min-w-[40rem]"
-          >
-            <title id="map-title">香港漁護署營地位置示意圖</title>
-            <rect width={W} height={H} className="fill-muted/40" />
-            {campsites.map((c) => {
-              const { x, y } = project(c.lat, c.lng);
-              return (
-                <a
-                  key={c.id}
-                  href={`#site-${c.id}`}
-                  aria-label={`${c.id} 號 ${c.nameZh}`}
-                >
-                  <circle
-                    cx={x}
-                    cy={y}
-                    r={13}
-                    className="fill-primary stroke-card"
-                    strokeWidth={2}
-                  />
-                  <text
-                    x={x}
-                    y={y}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    className="fill-primary-foreground text-[11px] font-semibold"
-                  >
-                    {c.id}
-                  </text>
-                </a>
-              );
-            })}
-            <text
-              x={W - PAD}
-              y={H - 16}
-              textAnchor="end"
-              className="fill-muted-foreground text-[14px]"
-            >
-              北 ↑ · 示意圖，非實際比例地圖
-            </text>
-          </svg>
+        {/* `isolate` keeps Leaflet's internal z-indexes below the sticky site header. */}
+        <div
+          role="region"
+          aria-label="營地位置互動地圖"
+          className="relative isolate z-0 h-[60vh] min-h-80 w-full"
+        >
+          <CampsiteMapLoader points={mapPoints} />
         </div>
         <figcaption className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
           座標整理自漁護署營地開放數據。實際路線請參閱{" "}

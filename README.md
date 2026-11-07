@@ -8,7 +8,7 @@ An unofficial guide to the 41 designated campsites in Hong Kong's country parks,
 
 - `/` 營地列表：按地區、郊野公園、是否須預約篩選；按綜合分（預設）、單一評分維度或名稱排序
 - `/campsites/[slug]` 營地詳情：簡介、設施、交通指引、編輯評分明細、OpenStreetMap／Google 地圖及漁護署官方頁面連結（41 頁全部靜態生成）
-- `/map` 地圖總覽：按座標繪畫的位置示意圖，以及按郊野公園分組的清單，每個營地附 OpenStreetMap 連結（不使用付費地圖 API，亦無需 API 金鑰）
+- `/map` 地圖總覽：OpenStreetMap 互動地圖（Leaflet，標出全部營地），以及按郊野公園分組的清單，每個營地附 OpenStreetMap 連結（不使用付費地圖 API，亦無需 API 金鑰）
 - `/about` 關於：資料來源、評分方法、露營守則提示及免責聲明
 
 ### SEO／社交分享
