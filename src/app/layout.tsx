@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: site.description,
     url: "/",
   },
-  twitter: { card: "summary" },
+  twitter: { card: "summary_large_image", title: defaultTitle, description: site.description },
   formatDetection: { telephone: false },
 };
 

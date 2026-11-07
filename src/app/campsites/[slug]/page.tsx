@@ -9,6 +9,7 @@ import { ACCESS_LABELS, CAPACITY_LABELS, MISSING, WATER_LABELS } from "@/lib/lab
 import { googleMapsUrl, osmUrl } from "@/lib/maps";
 import { pageMetadata } from "@/lib/metadata";
 import { formatComposite } from "@/lib/ratings";
+import { site } from "@/lib/site";
 
 export function generateStaticParams() {
   return campsites.map((c) => ({ slug: c.slug }));
@@ -24,6 +25,8 @@ export async function generateMetadata({
     title: `${c.nameZh}（${c.nameEn}）`,
     description: `${c.introZh}編輯綜合分 ${formatComposite(c.composite)} / 5。`,
     path: `/campsites/${c.slug}`,
+    imagePath: `/campsites/${c.slug}/opengraph-image`,
+    imageAlt: `${c.nameZh}｜${site.name}`,
   });
 }
 

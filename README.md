@@ -11,6 +11,11 @@ An unofficial guide to the 41 designated campsites in Hong Kong's country parks,
 - `/map` 地圖總覽：按座標繪畫的位置示意圖，以及按郊野公園分組的清單，每個營地附 OpenStreetMap 連結（不使用付費地圖 API，亦無需 API 金鑰）
 - `/about` 關於：資料來源、評分方法、露營守則提示及免責聲明
 
+### SEO／社交分享
+
+- Open Graph／Twitter 大圖預覽由 Next.js `opengraph-image`／`twitter-image`（`ImageResponse`）生成：首頁用預設網站圖像；每個 `/campsites/[slug]` 頁面有獨立預覽圖，顯示營地名稱、地區及郊野公園、綜合評分
+- 中文字型（Noto Sans TC）於生成圖像時按需從 Google Fonts 載入子集
+
 ## 技術
 
 Next.js 16（App Router、Turbopack）、React 19、TypeScript、Tailwind CSS 4、shadcn/ui。資料存放於型別化的 TypeScript 模組 `src/data/campsites.ts`，不使用資料庫，建置時會檢查資料格式（`src/lib/validate.ts`）。
