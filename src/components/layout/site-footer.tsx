@@ -8,9 +8,9 @@ export function SiteFooter() {
         <div className="space-y-3">
           <p className="font-semibold">{site.name}</p>
           <p className="max-w-prose leading-relaxed text-muted-foreground">
-            本站為非官方資訊整理網站，與漁農自然護理署（漁護署）及康樂及文化事務署並無任何關係。
-            營地資料整理自漁護署公開資料，可能有所變更；所有分數均為「編輯評分」，屬主觀意見，僅供參考。
-            出發前請查閱官方最新公告及天氣資訊。
+            {"本站為非官方資訊整理網站，與漁農自然護理署（漁護署）及康樂及文化事務署並無任何關係。" +
+              "營地資料整理自漁護署公開資料，可能有所變更；所有分數均為「編輯評分」，屬主觀意見，僅供參考。" +
+              "出發前請查閱官方最新公告及天氣資訊。"}
           </p>
           <p>
             <Link href="/about" className="font-medium text-primary underline underline-offset-4">
@@ -21,7 +21,7 @@ export function SiteFooter() {
         <div className="space-y-3">
           <p className="font-semibold">資料來源</p>
           <ul className="space-y-2">
-            {[sources.afcdCampsites, sources.afcdCsv].map((s) => (
+            {[sources.afcdCampsites, sources.afcdCsv, sources.afcdCampingRules].map((s) => (
               <li key={s.url}>
                 <a
                   href={s.url}
