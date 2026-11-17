@@ -7,21 +7,19 @@ import {
   RATING_LABELS,
   RATING_WEIGHTS,
 } from "@/lib/ratings";
-import { CompositeScore } from "./composite-score";
 import { ScoreMeter } from "./score-meter";
 
 const pct = (n: number) => `${Math.round(n * 100)}%`;
 
 /** Full breakdown used on the detail page. */
-export function RatingPanel({ ratings, composite }: { ratings: RatingScores; composite: number }) {
+export function RatingPanel({ ratings }: { ratings: RatingScores }) {
   return (
     <section aria-labelledby="scores" className="rounded-md border border-border bg-card p-5">
       <h2 id="scores" className="font-heading text-xl font-bold">
         編輯評分
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">本站編輯根據公開資料作出的主觀評估，並非用戶評價。</p>
-      <CompositeScore value={composite} size="lg" className="mt-4" />
-      <div className="mt-6 space-y-5">
+      <div className="mt-5 space-y-5">
         {RATING_DIMENSIONS.map((d) => (
           <ScoreMeter
             key={d}
