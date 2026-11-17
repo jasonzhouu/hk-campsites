@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import type { RatingScores } from "@/types/campsite";
 import {
   COMPOSITE_FORMULA_ZH,
@@ -14,13 +15,13 @@ const pct = (n: number) => `${Math.round(n * 100)}%`;
 /** Full breakdown used on the detail page. */
 export function RatingPanel({ ratings, composite }: { ratings: RatingScores; composite: number }) {
   return (
-    <section aria-labelledby="scores" className="rounded-lg border border-border bg-card p-5">
-      <h2 id="scores" className="text-lg font-semibold">
+    <section aria-labelledby="scores" className="rounded-md border border-border bg-card p-5">
+      <h2 id="scores" className="font-heading text-xl font-bold">
         編輯評分
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">本站編輯根據公開資料作出的主觀評估，並非用戶評價。</p>
       <CompositeScore value={composite} size="lg" className="mt-4" />
-      <div className="mt-5 space-y-4">
+      <div className="mt-6 space-y-5">
         {RATING_DIMENSIONS.map((d) => (
           <ScoreMeter
             key={d}
@@ -30,7 +31,7 @@ export function RatingPanel({ ratings, composite }: { ratings: RatingScores; com
           />
         ))}
       </div>
-      <div className="mt-5 space-y-2 border-t border-border pt-4 text-xs leading-relaxed text-muted-foreground">
+      <div className="mt-5 space-y-2 border-t border-border pt-4 text-[13px] leading-relaxed text-muted-foreground">
         <p>
           <span className="font-medium text-foreground">清靜度怎樣計算？</span>
           {QUIETNESS_NOTE_ZH}
@@ -42,9 +43,19 @@ export function RatingPanel({ ratings, composite }: { ratings: RatingScores; com
 }
 
 /** Compact four-dimension grid used on list cards. */
-export function RatingSummary({ ratings }: { ratings: RatingScores }) {
+export function RatingSummary({
+  ratings,
+  className,
+}: {
+  ratings: RatingScores;
+  className?: string;
+}) {
   return (
-    <div className="grid grid-cols-4 gap-2" aria-label="編輯評分（各維度）" role="group">
+    <div
+      className={cn("grid grid-cols-2 gap-x-6 gap-y-3", className)}
+      aria-label="編輯評分（各維度）"
+      role="group"
+    >
       {RATING_DIMENSIONS.map((d) => (
         <ScoreMeter
           key={d}
