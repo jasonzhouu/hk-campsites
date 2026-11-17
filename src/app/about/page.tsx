@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageBand } from "@/components/layout/page-band";
 import { campsites } from "@/data";
 import {
   COMPOSITE_FORMULA_ZH,
@@ -24,7 +25,7 @@ function ExternalLink({ href, children }: { href: string; children: React.ReactN
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="break-words font-medium text-primary underline underline-offset-4"
+      className="break-words font-medium text-primary underline decoration-primary/50 underline-offset-4 hover:decoration-primary"
     >
       {children}
       <span className="sr-only">（於新分頁開啟）</span>
@@ -34,8 +35,8 @@ function ExternalLink({ href, children }: { href: string; children: React.ReactN
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20 space-y-3">
-      <h2 id={`${id}-title`} className="text-xl font-semibold">
+    <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20 space-y-4">
+      <h2 id={`${id}-title`} className="border-b border-border pb-2 font-heading text-2xl font-bold">
         {title}
       </h2>
       {children}
@@ -45,19 +46,20 @@ function Section({ id, title, children }: { id: string; title: string; children:
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
-      <header className="space-y-3">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-4xl">關於{site.name}</h1>
-        <p className="leading-relaxed text-muted-foreground">
+    <>
+      <PageBand narrow>
+        <h1 className="text-3xl font-bold sm:text-5xl">關於{site.name}</h1>
+        <p className="mt-4 max-w-prose leading-relaxed text-signboard-foreground/85">
           本站把漁農自然護理署（漁護署）在郊野公園及特別地區設立的 {campsites.length}{" "}
-          個指定露營地點整理成易讀的列表，方便比較水源、營位、交通及景色。</p>
-      </header>
-
+          個指定露營地點整理成易讀的列表，方便比較水源、營位、交通及景色。
+        </p>
+      </PageBand>
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
       <div
         role="note"
-        className="mt-8 rounded-lg border border-warning-foreground/30 bg-warning px-4 py-4 text-sm leading-relaxed text-warning-foreground"
+        className="rounded-md border-2 border-blaze bg-warning px-4 py-4 text-[15px] leading-relaxed text-warning-foreground"
       >
-        <p className="font-semibold">免責聲明</p>
+        <p className="font-heading text-lg font-bold">免責聲明</p>
         <p className="mt-1">
           本站為非官方的資訊整理網站，<strong>並非政府網站</strong>，與漁農自然護理署（漁護署）及康樂及文化事務署（康文署）並無任何關係。營地資料整理自漁護署公開資料，<strong>可能已經過時或有所變更</strong>；評分為編輯主觀意見，僅供參考。出發前請查閱漁護署最新公告、天氣及交通資訊，並遵守《郊野公園及特別地區規例》及露營守則。如本站內容與官方資料有出入，一概以官方資料為準。</p>
       </div>
@@ -91,7 +93,7 @@ export default function AboutPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[20rem] border-collapse text-sm">
               <thead>
-                <tr className="border-b border-border text-left">
+                <tr className="border-b-2 border-foreground/70 text-left">
                   <th scope="col" className="py-2 pr-4 font-semibold">維度</th>
                   <th scope="col" className="py-2 pr-4 font-semibold">權重</th>
                   <th scope="col" className="py-2 font-semibold">考慮因素</th>
@@ -100,8 +102,11 @@ export default function AboutPage() {
               <tbody>
                 {RATING_DIMENSIONS.map((d) => (
                   <tr key={d} className="border-b border-border">
-                    <th scope="row" className="py-2 pr-4 font-medium">{RATING_LABELS[d].zh}</th>
-                    <td className="py-2 pr-4 tabular-nums">{Math.round(RATING_WEIGHTS[d] * 100)}%</td>
+                    <th scope="row" className="whitespace-nowrap py-2 pr-4 text-left font-medium">{RATING_LABELS[d].zh}</th>
+                    <td className="py-2 pr-4 tabular-nums">
+                      <span className="font-bold">{Math.round(RATING_WEIGHTS[d] * 100)}%</span>
+                      <span aria-hidden="true" className="mt-1 block h-1.5 rounded-[2px] bg-primary" style={{ width: `${RATING_WEIGHTS[d] * 100 * 2.4}px` }} />
+                    </td>
                     <td className="py-2 text-muted-foreground">{RATING_LABELS[d].hintZh}</td>
                   </tr>
                 ))}
@@ -109,7 +114,7 @@ export default function AboutPage() {
             </table>
           </div>
           <p className="leading-relaxed">{COMPOSITE_FORMULA_ZH}。</p>
-          <p className="rounded-lg border border-border bg-card px-4 py-3 leading-relaxed">
+          <p className="rounded-md border border-border bg-card px-4 py-3 leading-relaxed">
             <span className="font-semibold">清靜度慣例：</span>
             {QUIETNESS_NOTE_ZH}
           </p>
@@ -143,6 +148,7 @@ export default function AboutPage() {
             。</p>
         </Section>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
