@@ -179,6 +179,115 @@
   }
 }
 
+/* Leaflet map chrome, themed to the signboard palette. Popup content and divIcons are
+   rendered by Leaflet outside React/Tailwind scope, so these live here. */
+.hk-pin {
+  background: none;
+  border: 0;
+}
+.hk-pin__plate {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 22px;
+  padding-inline: 4px;
+  border-radius: 4px;
+  background: var(--signboard);
+  color: var(--blaze);
+  font: 700 13px/1 var(--font-sung), serif;
+  font-variant-numeric: tabular-nums lining-nums;
+  box-shadow:
+    inset 0 0 0 1.5px oklch(0.95 0.015 130 / 0.6),
+    0 2px 5px oklch(0.2 0.04 160 / 0.45);
+  transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hk-pin__plate::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  translate: -50% 0;
+  border: 5px solid transparent;
+  border-top-color: var(--signboard);
+  border-bottom: 0;
+}
+@media (min-width: 640px) {
+  .hk-pin__plate {
+    min-width: 34px;
+    height: 28px;
+    font-size: 14px;
+  }
+}
+.leaflet-marker-icon:hover .hk-pin__plate,
+.leaflet-marker-icon:focus-visible .hk-pin__plate {
+  transform: translateY(-2px) scale(1.08);
+}
+.leaflet-marker-icon:focus-visible {
+  outline: none;
+}
+.leaflet-marker-icon:focus-visible .hk-pin__plate {
+  outline: 3px solid var(--blaze);
+  outline-offset: 2px;
+}
+.leaflet-container {
+  font-family: inherit;
+  background: var(--muted);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 6px 18px oklch(0.2 0.04 160 / 0.3);
+}
+.leaflet-popup-tip {
+  background: var(--card);
+}
+.leaflet-popup-content {
+  margin: 12px 16px;
+  line-height: 1.5;
+}
+.leaflet-popup-content p {
+  margin: 0;
+}
+.leaflet-container .hk-popup-link {
+  color: var(--primary);
+}
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--muted-foreground);
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  line-height: 32px;
+}
+.leaflet-bar {
+  border: 0;
+  box-shadow: 0 1px 6px oklch(0.2 0.04 160 / 0.35);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.leaflet-bar a,
+.leaflet-touch .leaflet-bar a {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background: var(--card);
+  color: var(--signboard);
+  border-bottom-color: var(--border);
+}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus-visible {
+  background: var(--secondary);
+  color: var(--signboard);
+}
+.leaflet-container .leaflet-control-attribution {
+  background: oklch(0.992 0.005 140 / 0.9);
+  color: var(--muted-foreground);
+}
+.leaflet-control-attribution a {
+  color: var(--primary);
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     scroll-behavior: auto !important;

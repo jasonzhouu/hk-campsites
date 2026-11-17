@@ -27,22 +27,26 @@ export default function CampsiteMap({ points }: { points: MapPoint[] }) {
     };
   }, []);
 
-  // Serve marker images locally instead of relying on Leaflet's URL detection (broken under bundlers).
-  const markerIcon = useMemo(
+  // Signboard pins: a dark green plate with the AFCD campsite number in trail-blaze amber.
+  // Built as divIcons (styled in globals.css), so no marker image files are needed and
+  // Leaflet's bundler-hostile icon URL detection is never involved.
+  const icons = useMemo(
     () =>
       mounted
-        ? L.icon({
-            iconUrl: "/leaflet/marker-icon.png",
-            iconRetinaUrl: "/leaflet/marker-icon-2x.png",
-            shadowUrl: "/leaflet/marker-shadow.png",
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            tooltipAnchor: [16, -28],
-            shadowSize: [41, 41],
-          })
+        ? new Map(
+            points.map((p) => [
+              p.id,
+              L.divIcon({
+                className: "hk-pin",
+                html: `<span class="hk-pin__plate">${p.id}</span>`,
+                iconSize: [34, 34],
+                iconAnchor: [17, 34],
+                popupAnchor: [0, -30],
+              }),
+            ]),
+          )
         : null,
-    [mounted],
+    [mounted, points],
   );
 
   const bounds = useMemo(
@@ -50,7 +54,7 @@ export default function CampsiteMap({ points }: { points: MapPoint[] }) {
     [mounted, points],
   );
 
-  if (!mounted || !markerIcon || !bounds) {
+  if (!mounted || !icons || !bounds) {
     return <div className={placeholderClass}>地圖載入中…</div>;
   }
 
@@ -71,19 +75,31 @@ export default function CampsiteMap({ points }: { points: MapPoint[] }) {
         <Marker
           key={p.id}
           position={[p.lat, p.lng]}
-          icon={markerIcon}
+          icon={icons.get(p.id)}
           title={`${p.id} 號 ${p.nameZh}`}
           alt={`${p.id} 號 ${p.nameZh}`}
+          riseOnHover
         >
           <Popup>
-            <div className="space-y-1 text-sm">
-              <p className="font-semibold">
-                <span className="mr-1 text-muted-foreground tabular-nums">#{p.id}</span>
+            <div className="min-w-44 space-y-2">
+              <p className="font-heading text-base font-bold leading-snug">
+                <span className="mr-1.5 font-sans text-sm font-normal text-muted-foreground tabular-nums">
+                  #{p.id}
+                </span>
                 {p.nameZh}
               </p>
-              <p className="text-muted-foreground">編輯綜合分 {p.score}</p>
+              <p className="text-sm">
+                編輯綜合分{" "}
+                <span className="inline-block rounded-sm bg-signboard px-1.5 font-heading font-bold text-blaze tabular-nums">
+                  {p.score}
+                </span>{" "}
+                <span className="text-muted-foreground">/ 5</span>
+              </p>
               {/* Plain anchor: Leaflet renders popup content outside the Next.js router context. */}
-              <a href={`/campsites/${p.slug}`} className="font-medium">
+              <a
+                href={`/campsites/${p.slug}`}
+                className="hk-popup-link inline-flex min-h-10 items-center font-bold underline underline-offset-4"
+              >
                 查看營地詳情 →
               </a>
             </div>

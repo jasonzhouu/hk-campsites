@@ -4,6 +4,7 @@ import { campsites, parks } from "@/data";
 import { formatComposite } from "@/lib/ratings";
 import { googleMapsUrl, osmUrl } from "@/lib/maps";
 import { pageMetadata } from "@/lib/metadata";
+import { PageBand } from "@/components/layout/page-band";
 import { CampsiteMapLoader } from "@/components/map/campsite-map-loader";
 import type { MapPoint } from "@/components/map/types";
 
@@ -26,28 +27,30 @@ const external = "font-medium text-primary underline underline-offset-4";
 
 export default function MapPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
-      <header className="max-w-3xl space-y-3">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-4xl">
-          地圖總覽
-        </h1>
-        <p className="leading-relaxed text-muted-foreground">
-          以下 OpenStreetMap 互動地圖標出全部 {campsites.length}{" "}
-          個營地的位置，可拖曳及縮放；點選標記可查看綜合分並前往營地詳情。地圖下方按郊野公園列出各營地，並附
-          OpenStreetMap 及 Google 地圖連結，方便規劃路線。
+    <>
+      <PageBand>
+        <h1 className="text-3xl font-bold sm:text-5xl">地圖總覽</h1>
+        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-signboard-foreground/85 sm:text-base">
+          全部 {campsites.length} 個營地的位置，可拖曳及縮放；點選標記查看綜合分並前往營地詳情。
         </p>
-      </header>
-
-      <figure className="mt-8 overflow-hidden rounded-lg border border-border bg-card">
+      </PageBand>
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+      <figure className="overflow-hidden rounded-md border border-border bg-card">
         {/* `isolate` keeps Leaflet's internal z-indexes below the sticky site header. */}
         <div
           role="region"
           aria-label="營地位置互動地圖"
-          className="relative isolate z-0 h-[60vh] min-h-80 w-full"
+          className="relative isolate z-0 h-[65vh] min-h-80 w-full"
         >
           <CampsiteMapLoader points={mapPoints} />
         </div>
-        <figcaption className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-3 border-t border-border px-4 py-3 text-sm">
+          <span aria-hidden="true" className="hk-pin__plate mb-1.5 shrink-0 self-start">
+            24
+          </span>
+          <p>標記上的數字是漁護署營地編號。標記密集的地方（例如西貢）請放大查看；亦可用 Tab 鍵逐個選取標記。</p>
+        </div>
+        <figcaption className="border-t border-border px-4 py-3 text-[13px] text-muted-foreground">
           座標整理自漁護署營地開放數據。實際路線請參閱{" "}
           <a
             href="https://www.openstreetmap.org/#map=11/22.35/114.15"
@@ -72,19 +75,22 @@ export default function MapPage() {
         </figcaption>
       </figure>
 
-      <div className="mt-10 space-y-10">
+      <p className="mt-10 max-w-2xl leading-relaxed text-muted-foreground">
+          以下按郊野公園列出各營地，並附 OpenStreetMap 及 Google 地圖連結，方便規劃路線。
+        </p>
+      <div className="mt-6 space-y-10">
         {parks.map((park) => {
           const sites = campsites.filter((c) => c.parkZh === park.zh);
           const headingId = `park-${sites[0].id}`;
           return (
             <section key={park.zh} aria-labelledby={headingId}>
-              <h2 id={headingId} className="text-lg font-semibold">
+              <h2 id={headingId} className="font-heading text-xl font-bold">
                 {park.zh}
-                <span className="ml-2 text-sm font-normal text-muted-foreground">
+                <span className="ml-2 font-sans text-sm font-normal text-muted-foreground">
                   {park.region} · {park.count} 個營地
                 </span>
               </h2>
-              <ul className="mt-3 divide-y divide-border rounded-lg border border-border bg-card">
+              <ul className="mt-3 divide-y divide-border rounded-md border border-border bg-card">
                 {sites.map((c) => (
                   <li
                     key={c.id}
@@ -94,16 +100,16 @@ export default function MapPage() {
                     <div className="min-w-0">
                       <Link
                         href={`/campsites/${c.slug}`}
-                        className="font-medium underline-offset-4 hover:underline"
+                        className="font-heading text-lg font-bold underline-offset-4 hover:underline"
                       >
-                        <span className="mr-1.5 text-muted-foreground tabular-nums">
+                        <span className="mr-1.5 font-normal text-muted-foreground tabular-nums">
                           #{c.id}
                         </span>
                         {c.nameZh}
                       </Link>
-                      <p className="text-xs text-muted-foreground tabular-nums">
+                      <p className="text-[13px] text-muted-foreground tabular-nums">
                         {c.lat.toFixed(5)}, {c.lng.toFixed(5)} · 編輯綜合分{" "}
-                        {formatComposite(c.composite)}
+                        <span className="font-bold text-foreground">{formatComposite(c.composite)}</span>
                       </p>
                     </div>
                     <div className="flex shrink-0 flex-wrap gap-x-4 gap-y-1 text-sm">
@@ -137,6 +143,7 @@ export default function MapPage() {
           );
         })}
       </div>
-    </div>
+      </div>
+    </>
   );
 }
