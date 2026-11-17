@@ -1,10 +1,33 @@
 import type { Metadata, Viewport } from "next";
+import { Chiron_Hei_HK, Chiron_Sung_HK } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { site } from "@/lib/site";
 import "./globals.css";
 
 const defaultTitle = `${site.name}｜漁護署 41 個指定露營地點`;
+
+// Hong Kong-standard glyph forms (not Japanese/Simplified shapes). Self-hosted by
+// next/font; CJK faces ship as unicode-range slices, so a page only downloads the
+// characters it actually uses. Hei is the UI/reading voice, Sung is the guidebook
+// voice for page titles, campsite names and scores.
+const chironHei = Chiron_Hei_HK({
+  subsets: ["latin"],
+  weight: "variable",
+  display: "swap",
+  preload: false,
+  variable: "--font-hei",
+  fallback: ["PingFang HK", "Noto Sans TC", "Microsoft JhengHei", "sans-serif"],
+});
+
+const chironSung = Chiron_Sung_HK({
+  subsets: ["latin"],
+  weight: "variable",
+  display: "swap",
+  preload: false,
+  variable: "--font-sung",
+  fallback: ["PMingLiU", "Noto Serif TC", "Songti TC", "serif"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -30,12 +53,12 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f7f5ee",
+  themeColor: "#1f3a2c",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="zh-HK" className="h-full antialiased">
+    <html lang="zh-HK" className={`${chironHei.variable} ${chironSung.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <a
           href="#main"
